@@ -1,0 +1,22 @@
+{
+  "name": "curso-mean",
+  "version": "1.0.0",
+  "description": "Aplicacion para aprender MEAN",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cesarzavaleta/area51mean.git"
+  },
+  "author": "cz",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cesarzavaleta/area51mean/issues"
+  },
+  "homepage": "https://github.com/cesarzavaleta/area51mean#readme",
+  "dependencies": {
+    "express": "^4.14.0"
+  }
+}
