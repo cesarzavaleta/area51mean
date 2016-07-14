@@ -1,3 +1,8 @@
+var mongoose = require('mongoose');
+//mongoose.connect('mongodb://localhost/pokemon');
+mongoose.connect('mongodb://mongouser:mongo123@ds017862.mlab.com:17862/pokemon_caz');
+console.log(mongoose);
+
 var express = require('express');
 var app = express();
 var path = require('path');
