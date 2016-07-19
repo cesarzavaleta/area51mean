@@ -17,6 +17,10 @@
   },
   "homepage": "https://github.com/cesarzavaleta/area51mean#readme",
   "dependencies": {
-    "express": "^4.14.0"
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "mongoose": "^4.5.5",
+    "morgan": "^1.7.0"
   }
 }
