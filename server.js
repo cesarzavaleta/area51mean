@@ -58,7 +58,7 @@ apiRouter.route('/users')
 	user.password = req.body.password;
 	user.save(function(err){
 		//verify duplicate entry on username
-		if(err.code == 11000){
+		if(err && err.code == 11000){
 			console.log(err);
 			return res.json({ success: false, message: 'El nombre de usuario ya existe' });
 		}
