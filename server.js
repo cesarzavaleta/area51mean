@@ -4,7 +4,7 @@ var morgan = require('morgan');
 var bodyparser = require('body-parser');
 var mongoose = require('mongoose');
 var User = require('./models/user');
-
+var Pokemon = require('./models/pokemon');
 
 var port = process.env.PORT || 5000;
 
@@ -72,6 +72,108 @@ apiRouter.route('/users')
 	})
 });
 
+apiRouter.route('/users/:user_id')
+.get(function(req, res){
+	User.findById(req.params.user_id, function(err, user){
+		if(err) return res.send(err);
+		if (user) {
+			res.json(user);
+			return;
+		}
+		res.sendStatus(404);
+	});
+
+})
+.put(function(req,res){
+	User.findById(req.params.user_id, function(err, user){
+		if(err) return res.send(err);
+		if (user) {
+			if (req.body.name) user.name = req.body.name;
+			if (req.body.username) user.username = req.body.username;
+			if (req.body.password) user.password = req.body.password;
+			user.save(function(error){
+				if(err) return res.send(err);
+				res.json({message: 'Usuario actualizdo'});
+			});
+			return;
+		}
+		res.sendStatus(404);		
+	});
+	
+})
+.delete(function(req, res){
+	User.remove({ _id: req.params.user_id}, function(err, user){
+		if(err) return res.send(err);
+		res.json({message: 'El usuario fue eliminado'});
+	})
+});
+
+
+
+
+
+apiRouter.route('/pokemons')
+.post(function(req, res){
+	var pokemon = new Pokemon();
+	for(var propname in req.body){
+		pokemon[propname] = req.body[propname];
+	}
+	pokemon.pokemonname = req.body.pokemonname;
+	pokemon.name = req.body.name;
+	pokemon.password = req.body.password;
+	pokemon.save(function(err){
+		//verify duplicate entry on pokemonname
+		if(err && err.code == 11000){
+			console.log(err);
+			return res.json({ success: false, message: 'El nombre de usuario ya existe' });
+		}
+		return res.json({message: 'El usuario se ha creado'});
+	});
+})
+.get(function(req, res){
+	Pokemon.find(function(err, pokemons){
+		if(err) return res.send(err);
+		res.json(pokemons)
+	})
+});
+
+apiRouter.route('/pokemons/:pokemon_id')
+.get(function(req, res){
+	Pokemon.findById(req.params.pokemon_id, function(err, pokemon){
+		if(err) return res.send(err);
+		if (pokemon) {
+			res.json({ message: pokemon.sayHi()});
+			return;
+		}
+		res.sendStatus(404);
+	});
+
+})
+.put(function(req,res){
+	Pokemon.findById(req.params.pokemon_id, function(err, pokemon){
+		if(err) return res.send(err);
+		if (pokemon) {
+			if (req.body.name) pokemon.name = req.body.name;
+			if (req.body.type) pokemon.type = req.body.type;
+			pokemon.save(function(error){
+				if(err) return res.send(err);
+				res.json({message: 'Pokemon actualizdo'});
+			});
+			return;
+		}
+		res.sendStatus(404);		
+	});
+	
+})
+.delete(function(req, res){
+	Pokemon.remove({ _id: req.params.pokemon_id}, function(err, pokemon){
+		if(err) return res.send(err);
+		res.json({message: 'El pokemon fue eliminado'});
+	})
+});
+
+
+
 app.use('/api', apiRouter);
 app.set('port', port);
 
@@ -79,6 +181,16 @@ app.listen(port);
 console.log('here we go!');
 
 
+// var x = Object.getOwnPropertyNames(User)
+// for (var i = 0 - 1; i < x.length; i++) {
+// 	console.log(x[i]);
+// }
+// console.log('-----------')
+// for(var p in User){
+// 	console.log(p);
+// }
+ console.log('-----------')
+console.log(Pokemon.schema.paths);
 
 
 
